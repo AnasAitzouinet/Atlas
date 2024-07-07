@@ -143,7 +143,7 @@ export default function Navbar() {
             <AnimatePresence mode="wait">
                 <motion.div
                     key={'navbar'}
-                    initial={{ opacity: 0, y: -100 }}
+                    initial={{ opacity: 0, y: -100 ,bottom: "16rem" }}
                     animate={{ opacity: 1, y: 0, bottom: isEnd ? "16rem " : "2.5rem" }}
                     transition={{ duration: 0.5, delay: 0.1, type: 'spring' }}
                     exit={{ opacity: 0, y: -100 }}
