@@ -78,18 +78,4 @@
     @apply overflow-x-hidden
   }
 }
-
-
-body {
-  transition-property: opacity, background, transofrm, filter;
-  transition-duration: 500ms;
-  transition-timing-function: ease-in-out;
-  scroll-behavior: smooth;
-}
-
-.page-transition {
-  opacity: 0;
-  background: rgb(125, 203, 240);
-  transform: translateY(40px);
-  filter: blur(20px);
-}
+ 

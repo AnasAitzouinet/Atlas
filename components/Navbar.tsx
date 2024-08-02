@@ -4,8 +4,7 @@ import { Button } from './ui/button';
 import { User2Icon } from 'lucide-react';
 import Link from 'next/link';
 import { AnimatePresence, motion } from "framer-motion";
-import LinkTransitions from "./transitions/LinkTransitions";
-
+ 
 
 
 const NavItems = [
@@ -45,9 +44,8 @@ const SlideTabs = () => {
                     <Tab href={item.href} key={index} setPosition={setPosition}>{item.name}</Tab>
                 ))
             }
-            <Tab href="/" setPosition={setPosition}>
+            <Tab href="/SignIn" setPosition={setPosition}>
                 <User2Icon className='w-6 h-6' />
-
             </Tab>
             <Cursor position={position} />
         </ul>
@@ -81,7 +79,7 @@ const Tab = ({
             }}
             className="relative z-10 block cursor-pointer px-3 py-1.5 text-xs  text-white mix-blend-difference md:px-5 md:py-3 md:text-base"
         >
-            <LinkTransitions href={href}>{children}</LinkTransitions>
+            <Link href={href}>{children}</Link>
 
         </li>
     );
@@ -191,7 +189,9 @@ export default function Navbar() {
                                 size={"icon"}
                                 className='hover:text-white hover:bg-transparent  rounded-full border   bg-white text-black transition-all duration-500 ease-in-out'
                             >
+                                <Link href="/SignIn" >
                                 <User2Icon className='w-6 h-6' />
+                                </Link>
                             </Button>
                         </motion.div>
                     </div>
