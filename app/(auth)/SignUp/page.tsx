@@ -27,10 +27,26 @@ import { z } from "zod"
 import { SignUpSchemaType, SignUpSchema } from "@/Schemas"
 import { getPhoneData, PhoneInput } from "@/components/PhoneInput"
 import { toast } from "sonner"
+import { useGoogleLogin } from "@react-oauth/google"
+import { SignUpAction } from "@/server/Auth"
+import { getErrorMessage } from "@/lib/handle-error"
 
 export default function SignUp() {
- 
-     const form = useForm<SignUpSchemaType>({
+
+
+    const googleLogin = useGoogleLogin({
+        onSuccess: async (tokenResponse) => {
+            console.log(tokenResponse);
+            //      const userInfo = await axios.get(
+            //      'https://www.googleapis.com/oauth2/v3/userinfo',
+            //    { headers: { Authorization: 'Bearer <tokenResponse.access_token>' } },
+            //);
+            //console.log(userInfo);
+        },
+        onError: errorResponse => console.log(errorResponse),
+    });
+
+    const form = useForm<SignUpSchemaType>({
         resolver: zodResolver(SignUpSchema),
         defaultValues: {
             email: "",
@@ -44,17 +60,29 @@ export default function SignUp() {
     function onSubmit(values: SignUpSchemaType) {
         const phoneData = getPhoneData(values.phone);
 
-		if (!phoneData.isValid) {
-			form.setError("phone", {
-				type: "manual",
-				message: "Invalid phone number",
-			});
-			return;
-		}
-		toast.success("Phone number is valid");
+        if (!phoneData.isValid) {
+            form.setError("phone", {
+                type: "manual",
+                message: "Invalid phone number",
+            });
+            return;
+        }
         // Do something with the form values.
         // ✅ This will be type-safe and validated.
         console.log(values)
+
+        toast.promise(SignUpAction(values), {
+            loading: "Setting up an account",
+            success: () => {
+                form.reset()
+                console.log("Created Account")
+                return "Created Account"
+            },
+            error: (err) => {
+                return getErrorMessage(err)
+            }
+        }
+        )
     }
     return (
         <Card className="mx-auto max-w-lg">
@@ -156,9 +184,13 @@ export default function SignUp() {
                             <Separator className="w-1/3" />
                         </div>
 
-                        <Button variant="outline" className="w-full space-x-2">
+                        <Button
+                            onClick={() => googleLogin()}
+                            type="button"
+                            variant="outline"
+                            className="w-full space-x-2">
                             <span>
-                                Sign up with Google
+                                Sign In with Google
                             </span>
                             <img alt="svgImg"
                                 className="w-8 h-8"
